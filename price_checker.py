@@ -81,15 +81,23 @@ def send_email_notification(price_changes):
 
     # Send email
     context = ssl.create_default_context()
+    server = None
+
     try:
-        with smtplib.SMTP_SSL(smtp_server, smtp_port, context=context) as server:
-            server.login(smtp_user, smtp_password)
-            server.sendmail(smtp_user, smtp_user, message.as_string())
+        # Connect to the SMTP server
+        server = smtplib.SMTP_SSL(smtp_server, smtp_port, context=context)
+        server.login(smtp_user, smtp_password)
+
+        # Send email
+        server.sendmail(smtp_user, smtp_user, message.as_string())
         print("Email notification sent successfully")
+
     except Exception as e:
         print(f"Failed to send email notification: {e}")
+
     finally:
-        server.quit()
+        if server:
+            server.quit()
 
 if __name__ == "__main__":
     check_prices_and_notify()
