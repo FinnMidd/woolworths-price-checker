@@ -10,18 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install playwright
+      - name: Install Firefox for Playwright
+        run: npx playwright install firefox
 
-    - name: Run script
-      run: python price_checker.py
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+
+      - name: Run script
+        env:
+          smtp_user: ${{ secrets.USER_EMAIL }}
+          smtp_password: ${{ secrets.USER_PASS }}
+        run: python price_checker.py
