@@ -1,6 +1,6 @@
 import json
 from playwright.sync_api import sync_playwright
-import smtplib
+import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -53,6 +53,39 @@ def check_prices_and_notify():
         if current_price != item['price']:
             print(f"Price change detected for {item['name']}: {item['price']} -> {current_price}")
             price_change_detected = True
+    
+    if price_change_detected:
+        send_email_notification()
+
+# Function for sending email
+def send_email_notification():
+    # Email configuration
+    smtp_server = 'smtp.gmail.com'  
+    smtp_port = 465 
+    smtp_user = os.environ.get('USER_EMAIL')  
+    smtp_password = os.environ.get('USER_PASS')
+    
+    # Email content
+    message = MIMEMultipart()
+    message['From'] = smtp_user
+    message['To'] = smtp_user
+    message['Subject'] = 'Price Change Detected'
+    
+    body = 'Price change detected for one or more items. Please check the logs for details.'
+    message.attach(MIMEText(body, 'plain'))
+    
+
+    # Send email
+    try:
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(smtp_server, smtp_port, context=context) as server:
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, smtp_user, message.as_string())
+        print("Email notification sent successfully")
+    except Exception as e:
+        print(f"Failed to send email notification: {e}")
+    finally:
+        server.quit()
 
 if __name__ == "__main__":
     check_prices_and_notify()
