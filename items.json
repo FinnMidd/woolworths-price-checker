@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Oak Plus - Chocolate",
+        "url": "https://www.woolworths.com.au/shop/productdetails/121502/oak-plus-no-sugar-added-chocolate",
+        "price": "13.90"
+    },
+    {
+        "name": "Grenade Protein Bar- Oreo",
+        "url": "https://www.woolworths.com.au/shop/productdetails/286090/grenade-oreo-milk-choc-high-protein-bar",
+        "price": "15.00"
+    },
+    {
+        "name": "Bsc Protein Bar - Cookies & Cream",
+        "url": "https://www.woolworths.com.au/shop/productdetails/504994/bsc-high-protein-low-carb-bar-cookies-cream",
+        "price": "14.50"
+    }
+]
