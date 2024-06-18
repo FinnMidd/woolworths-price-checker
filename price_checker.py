@@ -3,6 +3,7 @@ from playwright.sync_api import sync_playwright
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import os
 
 # Function for getting prices from webpage
 def get_price(url):
