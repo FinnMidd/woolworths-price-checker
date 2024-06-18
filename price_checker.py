@@ -45,7 +45,7 @@ def load_items(filename='items.json'):
 def check_prices_and_notify():
     items = load_items()
     prices = set()
-    price_change_detected = False
+    price_changes = []
     
     for item in items:
         current_price = get_price(item['url'])
@@ -53,13 +53,16 @@ def check_prices_and_notify():
             prices.add(current_price)
         if current_price != item['price']:
             print(f"Price change detected for {item['name']}: {item['price']} -> {current_price}")
-            price_change_detected = True
+            item['price'] = current_price
+            price_changes.append(f"{item['name']}: {item['price']} -> {current_price}")
     
-    if price_change_detected:
-        send_email_notification()
+    if price_changes:
+        send_email_notification(price_changes)
+    else:
+        print("All prices match")
 
 # Function for sending email
-def send_email_notification():
+def send_email_notification(price_changes):
     # Email configuration
     smtp_server = 'smtp.gmail.com'  
     smtp_port = 465 
@@ -70,9 +73,9 @@ def send_email_notification():
     message = MIMEMultipart()
     message['From'] = smtp_user
     message['To'] = smtp_user
-    message['Subject'] = 'Price Change Detected'
+    message['Subject'] = 'Woolworths Price Change Detected'
     
-    body = 'Price change detected for one or more items. Please check the logs for details.'
+    body = "The following price changes were detected:\n\n" + "\n".join(price_changes)
     message.attach(MIMEText(body, 'plain'))
     
 
