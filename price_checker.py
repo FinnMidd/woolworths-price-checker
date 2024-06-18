@@ -80,8 +80,8 @@ def send_email_notification(price_changes):
     
 
     # Send email
+    context = ssl.create_default_context()
     try:
-        context = ssl.create_default_context()
         with smtplib.SMTP_SSL(smtp_server, smtp_port, context=context) as server:
             server.login(smtp_user, smtp_password)
             server.sendmail(smtp_user, smtp_user, message.as_string())
