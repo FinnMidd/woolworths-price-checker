@@ -78,6 +78,9 @@ def send_email_notification(price_changes):
     body = "The following price changes were detected:\n\n" + "\n".join(price_changes)
     message.attach(MIMEText(body, 'plain'))
     
+    if not smtp_user or not smtp_password:
+        print("Error: SMTP user or password is not set.")
+        return
 
     # Send email
     context = ssl.create_default_context()
