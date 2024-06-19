@@ -78,10 +78,14 @@ def send_email_notification(price_changes):
     body = "The following price changes were detected:\n\n" + "\n".join(price_changes)
     message.attach(MIMEText(body, 'plain'))
     
+    # Check if environment variables are set and provide specific error messages
+    if not smtp_user:
+        print("Error: The environment variable USER_EMAIL is not set.")
+    if not smtp_password:
+        print("Error: The environment variable USER_PASS is not set.")
     if not smtp_user or not smtp_password:
-        print("Error: SMTP user or password is not set.")
         return
-
+    
     # Send email
     context = ssl.create_default_context()
     server = None
