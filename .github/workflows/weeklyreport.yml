@@ -28,6 +28,6 @@ jobs:
 
       - name: Run script
         env:
-          smtp_user: ${{ secrets.USER_EMAIL }}
-          smtp_password: ${{ secrets.USER_PASS }}
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_PASS: ${{ secrets.USER_PASS }}
         run: python price_checker.py
