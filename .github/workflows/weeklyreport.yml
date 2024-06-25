@@ -29,12 +29,6 @@ jobs:
           pip install notion-client
           pip install playwright
 
-      - name: Run Notion script
-        env:
-          NOTION_KEY: ${{ secrets.NOTION_KEY }}
-          NOTION_UUID: ${{ secrets.NOTION_UUID }}
-        run: python notion_script.py
-
       - name: Run Price Checker script
         env:
           USER_EMAIL: ${{ secrets.USER_EMAIL }}
