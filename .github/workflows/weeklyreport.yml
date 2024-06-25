@@ -18,15 +18,24 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Install Firefox for Playwright
-        run: npx playwright install firefox
+      - name: Install Playwright and Firefox
+        run: |
+          npx playwright install
+          npx playwright install firefox
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install notion-client
           pip install playwright
 
-      - name: Run script
+      - name: Run Notion script
+        env:
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          NOTION_UUID: ${{ secrets.NOTION_UUID }}
+        run: python notion_script.py
+
+      - name: Run Price Checker script
         env:
           USER_EMAIL: ${{ secrets.USER_EMAIL }}
           USER_PASS: ${{ secrets.USER_PASS }}
