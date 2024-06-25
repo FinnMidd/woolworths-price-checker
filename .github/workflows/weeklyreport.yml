@@ -24,10 +24,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          pip install notion-client
           pip install playwright
 
-      - name: Run script
+      - name: Run Notion script
         env:
-          smtp_user: ${{ secrets.USER_EMAIL }}
-          smtp_password: ${{ secrets.USER_PASS }}
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          NOTION_UUID: ${{ secrets.NOTION_UUID }}
+        run: python notion_script.py
+
+      - name: Run Price Checker script
+        env:
+          USER_EMAIL: ${{ secrets.USER_EMAIL }}
+          USER_PASS: ${{ secrets.USER_PASS }}
         run: python price_checker.py

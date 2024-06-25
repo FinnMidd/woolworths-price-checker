@@ -64,23 +64,57 @@ def check_prices_and_notify():
 # Function for sending email
 def send_email_notification(price_changes):
     # Email configuration
-    smtp_server = 'smtp.gmail.com'  
-    smtp_port = 465 
-    smtp_user = os.environ.get('USER_EMAIL')  
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 465
+    smtp_user = os.environ.get('USER_EMAIL')
     smtp_password = os.environ.get('USER_PASS')
-    
+
+    # Check if environment variables are set and provide specific error messages
+    if not smtp_user:
+        print("Error: The environment variable USER_EMAIL is not set.")
+    if not smtp_password:
+        print("Error: The environment variable USER_PASS is not set.")
+    if not smtp_user or not smtp_password:
+        return
+
+    # Create the HTML body
+    html_body = """
+    <html>
+    <body>
+        <h2>Price Change Notification</h2>
+        <p>The following price changes were detected:</p>
+        <table border="1" style="border-collapse: collapse;">
+            <tr>
+                <th>Item</th>
+                <th>Old Price</th>
+                <th>New Price</th>
+            </tr>
+    """
+    for change in price_changes:
+        item, prices = change.split(": ")
+        old_price, new_price = prices.split(" -> ")
+        html_body += f"""
+            <tr>
+                <td>{item}</td>
+                <td>${float(old_price):.2f}</td>
+                <td>${float(new_price):.2f}</td>
+            </tr>
+        """
+
+    html_body += """
+        </table>
+    </body>
+    </html>
+    """
+
     # Email content
-    message = MIMEMultipart()
+    message = MIMEMultipart("alternative")
     message['From'] = smtp_user
     message['To'] = smtp_user
     message['Subject'] = 'Woolworths Price Change Detected'
-    
-    body = "The following price changes were detected:\n\n" + "\n".join(price_changes)
-    message.attach(MIMEText(body, 'plain'))
-    
-    if not smtp_user or not smtp_password:
-        print("Error: SMTP user or password is not set.")
-        return
+
+    # Attach HTML body to the email
+    message.attach(MIMEText(html_body, 'html'))
 
     # Send email
     context = ssl.create_default_context()
