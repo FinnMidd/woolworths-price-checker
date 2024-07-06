@@ -37,9 +37,10 @@ def get_price(url):
     return price
 
 # Function for loading items from JSON file
-def load_items(filename='items.json'):
+def load_items(filename='data.json'):
     with open(filename, 'r') as f:
-        return json.load(f)
+        data = json.load(f)
+        return data['documents']  # Extract the documents array
 
 # Function for checking prices and running email function
 def check_prices_and_notify():
@@ -51,7 +52,7 @@ def check_prices_and_notify():
         current_price = get_price(item['url'])
         if current_price is not None:
             prices.add(current_price)
-        if current_price != item['price']:
+        if current_price != str(item['price']):  # Ensure price comparison is correct
             print(f"Price change detected for {item['name']}: {item['price']} -> {current_price}")
             item['price'] = current_price
             price_changes.append(f"{item['name']}: {item['price']} -> {current_price}")
