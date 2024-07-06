@@ -10,9 +10,6 @@ payload = json.dumps({
     "collection": "collection1",
     "database": "woolworths-price-checker",
     "dataSource": "Cluster0",
-    "query": {
-        "active": True
-    },
     "limit": 100  # Adjust this number as needed
 })
 headers = {
