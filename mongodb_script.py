@@ -23,8 +23,9 @@ response = requests.request("POST", url, headers=headers, data=payload)
 # Parse the JSON response
 data = response.json()
 
-# Save the data to a JSON file
+# Save the data to a JSON file with only active items
+filtered_data = [item for item in data if item.get('active') == True]
 with open('data.json', 'w') as json_file:
-    json.dump(data, json_file, indent=4)
+    json.dump(filtered_data, json_file, indent=4)
 
 print("Data saved to data.json")
