@@ -10,6 +10,9 @@ payload = json.dumps({
     "collection": "collection1",
     "database": "woolworths-price-checker",
     "dataSource": "Cluster0",
+    "query": {
+        "active": True
+    },
     "limit": 100  # Adjust this number as needed
 })
 headers = {
@@ -23,7 +26,7 @@ response = requests.request("POST", url, headers=headers, data=payload)
 # Parse the JSON response
 data = response.json()
 
-# Save the data to a JSON file with only active items
+# Save the data to a JSON file with only active: true items
 filtered_data = [item for item in data if item.get('active') == True]
 with open('data.json', 'w') as json_file:
     json.dump(filtered_data, json_file, indent=4)
