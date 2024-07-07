@@ -55,9 +55,6 @@ def check_prices_and_notify():
             item_price = float(item['price'])
             current_price = float(get_price(item['url']))
 
-            if current_price is not None:
-                prices.add(current_price)
-                
             if current_price != item_price:  # Ensure price comparison is correct
                 print(f"Price change detected for {item['name']}: {item['price']} -> {current_price}")
                 price_changes.append(f"{item['name']}: {item['price']} -> {current_price}")
