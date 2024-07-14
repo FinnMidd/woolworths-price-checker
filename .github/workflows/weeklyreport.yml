@@ -2,7 +2,7 @@ name: weeklyreport
 
 on:
   schedule:
-    - cron: '0 15 * * 2'  # Runs at 01:00 AEST Wednesday
+    - cron: '0 19 * * 2'  # Runs at 05:00 AEST Wednesday
   workflow_dispatch:
 
 jobs:
